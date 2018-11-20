@@ -9,6 +9,7 @@ Created on Sat Nov 17 18:17:05 2018
 from scheduler import Scheduler
 from circularqueue import CircularQueue
 from process import Process
+import plotting
 
 class RoundRobin(Scheduler):
     
@@ -40,11 +41,13 @@ class RoundRobin(Scheduler):
                 
             else:
                 #return "Queue Empty"
+                plotting.addPoint(0)
                 return 0
         
         #decrement quantum, run process
         self.__run_qntm = self.__run_qntm - 1
         self.__process.run(1)
+        plotting.addPoint(self.__process.getNumber())
         print(self.__process.getNumber(), self.__process.getRemaining(), ' ', self.__process.getBurst())
         
         for i in range(self.__queue.size()):
@@ -66,6 +69,9 @@ class RoundRobin(Scheduler):
     def switchContext(self):
         
         #Add context Switch Handeling
+        for i in range(super().getCST()):
+            plotting.addPoint(0)
+            
         self.__process = Process()
         self.__run_qntm = super().getQntm()
         return

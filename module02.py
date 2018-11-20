@@ -8,6 +8,7 @@ Created on Sat Nov 17 22:04:12 2018
 
 #from roundrobin import RoundRobin
 import roundrobin
+import plotting
 
 inputFile = open('output01.txt','r')
 
@@ -29,7 +30,8 @@ for i in range(1, len(lines)):
     
 processes = processes[0].sortList(processes)
 
-sch = roundrobin.RoundRobin(1, 4)
+sch = roundrobin.RoundRobin(1, 6)
+#plotting.defineY(total)
 #processes = roundrobin.Process.sortList(processes, roundrobin.Process.getArrival())
     
 for i in range(len(processes)):
@@ -54,3 +56,5 @@ while done < total:
     done += sch.runProcess()
     time += 1
     print(done, time)
+    
+plotting.plot()
