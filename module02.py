@@ -9,6 +9,7 @@ Created on Sat Nov 17 22:04:12 2018
 #from roundrobin import RoundRobin
 import roundrobin
 import plotting
+from process import getAvgTA, getAvgWTA
 
 inputFile = open('output01.txt','r')
 
@@ -58,3 +59,4 @@ while done < total:
     print(done, time)
     
 plotting.plot()
+print(getAvgTA(processes), getAvgWTA(processes))

@@ -5,6 +5,23 @@ Created on Sat Nov 17 19:50:14 2018
 
 @author: Haneen
 """
+
+def getAvgTA(processes):
+    
+    sum = 0
+    for i in range(len(processes)):
+        sum += processes[i].getTurnaround()
+    
+    return (sum/len(processes))
+
+def getAvgWTA(processes):
+    
+    sum = 0
+    for i in range(len(processes)):
+        sum += processes[i].getWeightedTA()
+    
+    return (sum/len(processes))
+
 class Process:
     
     def __init__(self, data = None):
