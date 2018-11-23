@@ -37,9 +37,6 @@ sch = shortestRTN.srtn(1, 6)
 #plotting.defineY(total)
 #processes = roundrobin.Process.sortList(processes, roundrobin.Process.getArrival())
     
-for i in range(len(processes)):
-    
-    print(processes[i].getArrival())
     
 #print(processes[0].getNumber())
 
