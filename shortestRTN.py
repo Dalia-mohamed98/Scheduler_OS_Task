@@ -23,13 +23,25 @@ class srtn(Scheduler):
         return
     
     def addProcess(self, process):
+        
         self.__queue.enqueue(process)
         
+        temp = self.__process
+        
         if self.__process != None:
+            
             self.__queue.enqueue(self.__process)
             self.__process = None
             
         self.sort()
+        
+        self.__process = self.__queue.dequeue()
+        guard = self.__process
+        
+        if temp != self.__process:
+            self.switchContext()
+            self.__process = guard
+        
         return
     
     def switchContext(self):

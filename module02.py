@@ -56,3 +56,5 @@ while done < total:
     
 plotting.plot()
 print(p.getAvgTA(processes), p.getAvgWTA(processes))
+temp = processes[0]
+print(processes[0] == temp)
