@@ -72,6 +72,10 @@ class RoundRobin(Scheduler):
         #Add context Switch Handeling
         for i in range(super().getCST()):
             plotting.addPoint(0)
+            for i in range(len(self.__queue.size())):
+                pro = self.__queue.dequeue()
+                pro.wait(1)
+                self.__queue.enqueue(pro)
             
         self.__process = None
         self.restartQntm()
