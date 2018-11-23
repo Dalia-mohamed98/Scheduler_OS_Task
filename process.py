@@ -41,7 +41,7 @@ class Process:
         self.__list.append(data[3])
         self.__list.append(0)
         self.__list.append(0)
-        self.__list.append(0) 
+        self.__list.append(data[2]) 
         return
         
     

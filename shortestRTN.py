@@ -79,8 +79,6 @@ class srtn(Scheduler):
         for i in range(len(processes)):
             print(processes[i].getRemaining())
         
-        self.__queue = CircularQueue()
-        
         for i in range(self.__queue.size()):
             self.__queue.enqueue(processes[i])
             
