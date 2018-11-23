@@ -8,13 +8,12 @@ Created on Sat Nov 17 18:17:05 2018
 
 from scheduler import Scheduler
 from circularqueue import CircularQueue
-from process import Process
 import plotting
 
 class RoundRobin(Scheduler):
     
     __queue = CircularQueue()
-    __process = Process()
+    __process = None
     
     def __init__(self, context_switch_time, quantum):
         
@@ -27,17 +26,20 @@ class RoundRobin(Scheduler):
         
         #finished quantum, switch context, enqueue process, restart quantum and return
         if self.__run_qntm == 0:
-            self.__queue.enqueue(self.__process)
-            self.switchContext()
-            print('here')
+            
+            if self.__queue.size() != 0:
+                self.__queue.enqueue(self.__process)
+                self.switchContext()
+            else:
+                self.restartQntm()
+            
             return 0
         
         #new quantum, new process
-        if self.__process.getNumber() == 0:
-            print('here1')
+        if self.__process == None:
+
             if self.__queue.size() != 0:
                 self.__process = self.__queue.dequeue()
-                print('here2')
                 
             else:
                 #return "Queue Empty"
@@ -62,7 +64,6 @@ class RoundRobin(Scheduler):
         return 0
     
     def addProcess(self, process):
-        
         self.__queue.enqueue(process)
         return
     
@@ -72,6 +73,10 @@ class RoundRobin(Scheduler):
         for i in range(super().getCST()):
             plotting.addPoint(0)
             
-        self.__process = Process()
+        self.__process = None
+        self.restartQntm()
+        return
+    
+    def restartQntm(self):
         self.__run_qntm = super().getQntm()
         return

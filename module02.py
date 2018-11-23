@@ -9,27 +9,27 @@ Created on Sat Nov 17 22:04:12 2018
 #from roundrobin import RoundRobin
 import roundrobin
 import plotting
-from process import getAvgTA, getAvgWTA
+import process as p
 
 inputFile = open('output01.txt','r')
 
 lines = inputFile.readlines()
 processes = list()
 data = [i for i in range(4)]
-print(data)
 
 total = int(lines[0])
 
 for i in range(1, len(lines)):
+    
     data[0], data[1], data[2], data[3] = lines[i].split()
     data[0] = int(data[0])
-    data[1] = float(data[1])
-    data[2] = float(data[2])
-    data[3] = float(data[3])
+    data[1] = round(float(data[1]), 4)
+    data[2] = round(float(data[2]), 4)
+    data[3] = round(float(data[3]), 4)
     
-    processes.append(roundrobin.Process(data))
+    processes.append(p.Process(data))
     
-processes = processes[0].sortList(processes)
+processes = processes[0].sortList(processes, 1)
 
 sch = roundrobin.RoundRobin(1, 6)
 #plotting.defineY(total)
@@ -39,14 +39,11 @@ for i in range(len(processes)):
     
     print(processes[i].getArrival())
     
-#print(processes[0].getNumber())r
+#print(processes[0].getNumber())
 
 time = 0
 done = 0
 iteratable = 0
-
-'''for i in range(len(processes)):
-    print(processes[i].getBurst())'''
 
 while done < total:
     
@@ -59,4 +56,4 @@ while done < total:
     print(done, time)
     
 plotting.plot()
-print(getAvgTA(processes), getAvgWTA(processes))
+print(p.getAvgTA(processes), p.getAvgWTA(processes))
