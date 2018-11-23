@@ -24,6 +24,11 @@ class srtn(Scheduler):
     
     def addProcess(self, process):
         self.__queue.enqueue(process)
+        
+        if self.__process != None:
+            self.__queue.enqueue(self.__process)
+            self.__process = None
+            
         self.sort()
         return
     
