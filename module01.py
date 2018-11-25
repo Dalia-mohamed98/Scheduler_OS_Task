@@ -27,7 +27,7 @@ lamda = float(lines[3])
 
 #print(type(processNo), type(miu1), sigma2, miu2, sigma2, lamda)'''
 
-outputFile = open('output01.txt', 'w')
+outputFile = open('output02.txt', 'w')
 outputFile.write(str(processNo) + '\n')
 
 for i in range(processNo):

@@ -5,19 +5,20 @@ Created on Sat Nov 17 18:17:05 2018
 
 @author: Haneen
 """
-
+import queue
 from scheduler import Scheduler
-from circularqueue import CircularQueue
-import plotting
+from plotting import pltng
 
-class RoundRobin(Scheduler):
+class RR(Scheduler):
     
-    __queue = CircularQueue()
-    __process = None
     
     def __init__(self, context_switch_time, quantum):
         
         super().__init__(context_switch_time, quantum)
+        
+        self.__queue = queue.Queue()
+        self.__process = None
+        self.plotting = pltng()
         
         self.__run_qntm = quantum
         return
@@ -27,8 +28,8 @@ class RoundRobin(Scheduler):
         #finished quantum, switch context, enqueue process, restart quantum and return
         if self.__run_qntm == 0:
             
-            if self.__queue.size() != 0:
-                self.__queue.enqueue(self.__process)
+            if self.__queue.qsize() != 0:
+                self.__queue.put(self.__process)
                 self.switchContext()
             else:
                 self.restartQntm()
@@ -38,24 +39,24 @@ class RoundRobin(Scheduler):
         #new quantum, new process
         if self.__process == None:
 
-            if self.__queue.size() != 0:
-                self.__process = self.__queue.dequeue()
+            if self.__queue.qsize() != 0:
+                self.__process = self.__queue.get()
                 
             else:
                 #return "Queue Empty"
-                plotting.addPoint(0)
+                self.plotting.addPoint(0)
                 return 0
         
         #decrement quantum, run process
         self.__run_qntm = self.__run_qntm - 1
         self.__process.run(1)
-        plotting.addPoint(self.__process.getNumber())
+        self.plotting.addPoint(self.__process.getNumber())
         print(self.__process.getNumber(), self.__process.getRemaining(), ' ', self.__process.getBurst())
         
-        for i in range(self.__queue.size()):
-            pro = self.__queue.dequeue()
+        for i in range(self.__queue.qsize()):
+            pro = self.__queue.get()
             pro.wait(1)
-            self.__queue.enqueue(pro)
+            self.__queue.put(pro)
             
         if self.__process.getRemaining() <= 0:
             self.switchContext()
@@ -64,18 +65,18 @@ class RoundRobin(Scheduler):
         return 0
     
     def addProcess(self, process):
-        self.__queue.enqueue(process)
+        self.__queue.put(process)
         return
     
     def switchContext(self):
         
         #Add context Switch Handeling
         for i in range(super().getCST()):
-            plotting.addPoint(0)
-            for i in range(len(self.__queue.size())):
-                pro = self.__queue.dequeue()
+            self.plotting.addPoint(0)
+            for j in range(self.__queue.qsize()):
+                pro = self.__queue.get()
                 pro.wait(1)
-                self.__queue.enqueue(pro)
+                self.__queue.put(pro)
             
         self.__process = None
         self.restartQntm()
@@ -83,4 +84,9 @@ class RoundRobin(Scheduler):
     
     def restartQntm(self):
         self.__run_qntm = super().getQntm()
+        return
+    
+    def plot(self):
+        
+        self.plotting.plot()
         return

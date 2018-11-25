@@ -10,27 +10,37 @@ import matplotlib.pyplot as plt; plt.rcdefaults()
 import numpy as np
 import matplotlib.pyplot as plt
 
-time = [0]
-processes = []
-
-'''def defineY(processes_num):
-    for i in range(processes_num):'''
+class pltng: 
+    
+    def __init__(self):
+        self.__time = []
+        self.__processes = []
+   
+    def addPoint(self, process):
         
+        if len(self.__time)== 0:
+            self.__time.append(0)
+            
+            
+        else:
+            self.__time.append(self.__time[-1]+1)
+            
+        self.__processes.append(process)
+        return
 
-def addPoint(process):
+    def plot(self):
+        
+        print(len(self.__time), len(self.__processes))
+        plt.gcf().clear()
+        print(len(self.__time), len(self.__processes))
+        #self.__processes.append(0)
+        y_pos = np.arange(len(self.__time))
+        
+        plt.bar(y_pos, self.__processes, width=1, align='center', alpha=1, color=['red', 'green'])
+        plt.xticks(y_pos, self.__time)
+        plt.ylabel('Processes')
+        plt.xlabel('Time')
+        plt.title('Scheduling')
     
-    time.append(time[-1]+1)
-    processes.append(process)
-    
-def plot():
-    
-    processes.append(0)
-    y_pos = np.arange(len(time))
-    
-    plt.bar(y_pos, processes, width=1, align='center', alpha=1)
-    plt.xticks(y_pos, time)
-    plt.ylabel('Processes')
-    plt.xlabel('Time')
-    plt.title('Scheduling')
-     
-    plt.show()
+        plt.show()
+        return

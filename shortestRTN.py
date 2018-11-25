@@ -5,37 +5,37 @@ Created on Fri Nov 23 21:24:43 2018
 
 @author: Haneen
 """
-
+import queue
 from scheduler import Scheduler
-from circularqueue import CircularQueue
-import plotting
-import process as p
+from plotting import pltng
 
-class srtn(Scheduler):
+class SRTN(Scheduler):
     
-    __queue = CircularQueue()
-    __process = None
+    
     
     def __init__(self, context_switch_time, quantum):
         
         super().__init__(context_switch_time, quantum)
+        self.__queue = queue.Queue()
+        self.__process = None
+        self.plotting = pltng()
         
         return
     
     def addProcess(self, process):
         
-        self.__queue.enqueue(process)
+        self.__queue.put(process)
         
         temp = self.__process
         
         if self.__process != None:
             
-            self.__queue.enqueue(self.__process)
+            self.__queue.put(self.__process)
             self.__process = None
             
         self.sort()
         
-        self.__process = self.__queue.dequeue()
+        self.__process = self.__queue.get()
         guard = self.__process
         
         if temp != self.__process:
@@ -48,11 +48,11 @@ class srtn(Scheduler):
         
         #Add context Switch Handeling
         for i in range(super().getCST()):
-            plotting.addPoint(0)
-            for i in range(self.__queue.size()):
-                pro = self.__queue.dequeue()
+            self.plotting.addPoint(0)
+            for j in range(self.__queue.qsize()):
+                pro = self.__queue.get()
                 pro.wait(1)
-                self.__queue.enqueue(pro)
+                self.__queue.put(pro)
                 
         self.__process = None
         return
@@ -61,21 +61,21 @@ class srtn(Scheduler):
         
         if self.__process == None:
             
-            if self.__queue.size() != 0:
-                self.__process = self.__queue.dequeue()
+            if self.__queue.qsize() != 0:
+                self.__process = self.__queue.get()
                 
             else:
                 #return "Queue Empty"
-                plotting.addPoint(0)
+                self.plotting.addPoint(0)
                 return 0
             
         self.__process.run(1)
-        plotting.addPoint(self.__process.getNumber())
+        self.plotting.addPoint(self.__process.getNumber())
         
-        for i in range(self.__queue.size()):
-            pro = self.__queue.dequeue()
+        for i in range(self.__queue.qsize()):
+            pro = self.__queue.get()
             pro.wait(1)
-            self.__queue.enqueue(pro)
+            self.__queue.put(pro)
         
         if self.__process.getRemaining() <= 0:
             self.switchContext()
@@ -87,11 +87,11 @@ class srtn(Scheduler):
         
         processes = list()
         
-        size = self.__queue.size()
+        size = self.__queue.qsize()
         print(size)
         
         for i in range(size):
-            processes.append(self.__queue.dequeue())
+            processes.append(self.__queue.get())
             print(processes[i].getNumber())
             
         processes = processes[0].sortList(processes, 6)
@@ -100,6 +100,11 @@ class srtn(Scheduler):
             print(processes[i].getNumber())
         
         for i in range(len(processes)):
-            self.__queue.enqueue(processes[i])
+            self.__queue.put(processes[i])
             
+        return
+    
+    def plot(self):
+        
+        self.plotting.plot()
         return

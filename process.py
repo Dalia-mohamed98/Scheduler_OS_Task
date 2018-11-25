@@ -81,5 +81,5 @@ class Process:
     def getWeightedTA(self):
         return (self.getTurnaround() / self.__list[self.__burst])
     
-    def sortList(self, processes, k):
-        return sorted(processes, key = lambda processes : processes.__list[k])
+    def sortList(self, processes, k,rev = False):
+        return sorted(processes, key = lambda processes : processes.__list[k],reverse=rev)
