@@ -76,13 +76,13 @@ def program(file, alg, cst, qntm):
             iteratable += 1
         
         done += sch.runProcess()
-        time += 1
-        print(done, time)
+        time += 0.5
+        #print(done, time)
         
     sch.plot()
     writeReport(processes)
-    temp = processes[0]
-    print(processes[0] == temp)
+    #temp = processes[0]
+    #print(processes[0] == temp)
     
     return
 

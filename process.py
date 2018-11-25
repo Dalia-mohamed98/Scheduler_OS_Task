@@ -46,12 +46,12 @@ class Process:
         
     
     def run(self, time):
-        self.__list[self.__run] += time
+        self.__list[self.__run] += 0.5
         self.__list[self.__remaining] = self.getRemaining()
         return
     
     def wait(self, time):
-        self.__list[self.__wait] += time
+        self.__list[self.__wait] += 0.5
         return
     
     def getNumber(self):

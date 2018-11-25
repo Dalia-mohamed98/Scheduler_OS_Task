@@ -25,7 +25,6 @@ class HPF(Scheduler):
         if self.__process == None:
             if self.__queue.qsize() != 0:
                 self.__process = self.__queue.get()
-                #print('g', self.__process.getNumber())
             else:
                 #return "Queue Empty
                 self.plotting.addPoint(0)
@@ -47,8 +46,7 @@ class HPF(Scheduler):
     
     def addProcess(self, process):
         self.__queue.put(process)
-        print(1,process.getNumber())
-
+        
         #hna hasort  lqueue descindingly according to priority
         self.sort()
         return
@@ -72,14 +70,10 @@ class HPF(Scheduler):
         
         for i in range(size):
             processes.append(self.__queue.get())
-            print(processes[i].getNumber())
                 
         processes = processes[0].sortList(processes, 1,False)
 
         processes = processes[0].sortList(processes, 3,True)
-        
-        for i in range(len(processes)): 
-            print(processes[i].getNumber())
         
         for i in range(len(processes)):
             self.__queue.put(processes[i])

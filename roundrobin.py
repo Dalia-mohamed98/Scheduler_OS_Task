@@ -48,10 +48,9 @@ class RR(Scheduler):
                 return 0
         
         #decrement quantum, run process
-        self.__run_qntm = self.__run_qntm - 1
+        self.__run_qntm = self.__run_qntm - 0.5
         self.__process.run(1)
         self.plotting.addPoint(self.__process.getNumber())
-        print(self.__process.getNumber(), self.__process.getRemaining(), ' ', self.__process.getBurst())
         
         for i in range(self.__queue.qsize()):
             pro = self.__queue.get()

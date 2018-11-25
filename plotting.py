@@ -36,8 +36,8 @@ class pltng:
         #self.__processes.append(0)
         y_pos = np.arange(len(self.__time))
         
-        plt.bar(y_pos, self.__processes, width=1, align='center', alpha=1, color=['red', 'green'])
-        plt.xticks(y_pos, self.__time)
+        plt.bar(y_pos, self.__processes, width=1, align='center', alpha=1, color=['aqua'])
+        plt.xticks(np.arange(min(self.__time), max(self.__time), self.__time[-1]/10))
         plt.ylabel('Processes')
         plt.xlabel('Time')
         plt.title('Scheduling')

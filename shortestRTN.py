@@ -88,16 +88,11 @@ class SRTN(Scheduler):
         processes = list()
         
         size = self.__queue.qsize()
-        print(size)
         
         for i in range(size):
             processes.append(self.__queue.get())
-            print(processes[i].getNumber())
             
         processes = processes[0].sortList(processes, 6)
-        
-        for i in range(len(processes)):
-            print(processes[i].getNumber())
         
         for i in range(len(processes)):
             self.__queue.put(processes[i])
